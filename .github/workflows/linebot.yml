@@ -1,0 +1,30 @@
+name: LINE Bot
+
+on:
+  schedule:
+    - cron: '0 10 * * 0'
+    - cron: '0 13 * * 0'
+
+  workflow_dispatch:
+
+jobs:
+  send-line:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install packages
+        run: pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
+          USER_ID: ${{ secrets.USER_ID }}
+        run: python main.py
